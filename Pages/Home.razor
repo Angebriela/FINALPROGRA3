@@ -1,7 +1,142 @@
 ﻿@page "/"
+@using Models
 
-<PageTitle>Home</PageTitle>
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<PageTitle>Ingreso de animales</PageTitle>
+
+<h1>Animales</h1>
+
+<div class="mb-3">
+    <label for="Nombre" class="form-label">Nombre: </label>
+    <InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
+    <ValidationMessage For="() => ave.Nombre" />
+    </div>
+
+<div class="mb-3">
+    <label for="especie">Especie: </label>
+    <InputSelect id="especie" class="form-control" @bind-Value="ave.Especie">
+        <option value="">Seleccione uno ...</option>
+        <option value="Perro">Perro</option>
+        <option value="Gato">Gato</option>
+        <option value="Ave">Ave</option>
+    </InputSelect>
+    <ValidationMessage For="() => ave.Especie" />
+</div>
+
+<div class="mb-3">
+    <label for="Edad" class="form-label">Edad: </label>
+    <InputNumber id="edad" class="form-control" @bind-Value="ave.Edad" />
+    <ValidationMessage For="() => ave.Edad" />
+</div>
+
+<div class="mb-3">
+    <label for="tipo de pico">Tipo de pico: </label>
+    <InputSelect id="tipo de pico" class="form-control" @bind-Value="ave.TipoDePico">
+        <option value="">Seleccione un valor ...</option>
+        <option value="Gancho">Gancho</option>
+        <option value="Recto">Recto</option>
+        <option value="Filtrador">Filtrador</option>
+    </InputSelect>
+    <ValidationMessage For="() => ave.TipoDePico" />
+</div>
+
+<div class="mb-3">
+    <label for="valid">Puede Volar: </label>
+    <InputCheckbox id="Puede volar" class="form-check-input" @bind-Value="ave.PuedeVolar" />
+    <ValidationMessage For="() => ave.PuedeVolar" />
+</div>
+
+ <div class="mb-3">
+    <button class="btn btn-secondary"@onclick="Contador">Guardar</button>
+ </div>
+<p role="animales guardados">Animales guardados: @contadorAnimales</p>
+
+
+
+<EditForm Models ="@ave" OnValidSubmit="@GuardarAves">
+    <DataAnnotationsValidator />
+	<ValidationSummary />
+
+    <div class="container text-center">
+        <div class="row mt-3">
+            <div class="col">
+                <label for="Nombre" class="form-label">Nombre: </label>
+                <InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
+                <ValidationMessage For="() => ave.Nombre" />
+            </div>
+            <div class="col">
+			    <label for="Especie" class="form-label">Especie: </label>
+			    <InputText id="especie" class="form-control" @bind-Value="ave.Especie" />
+			    <ValidationMessage For="() => ave.Especie" />
+            </div>
+        </div>
+            <div class="row mt-3">
+			    <div class="col">
+				    <label for="Edad" class="form-label">Edad: </label>
+				     <InputNumber id="edad" class="form-control" @bind-Value="ave.Edad" />
+				    <ValidationMessage For="() => ave.Edad" />
+                </div>
+                <div class="col">
+                    <label for="tipo de pico">Tipo de pico: </label>
+                    <InputSelect id="tipo de pico" class="form-control" @bind-Value="ave.TipoDePico">
+                        <option value="">Seleccione un valor ...</option>
+                        <option value="Gancho">Gancho</option>
+                        <option value="Recto">Recto</option>
+                        <option value="Filtrador">Filtrador</option>
+                    </InputSelect>
+                    <ValidationMessage For="() => ave.TipoDePico" />
+                </div>
+			    <div class="col">
+                    <label for="valid">Puede Volar: </label>
+                     <InputCheckbox id="Puede volar" class="form-check-input" @bind-Value="ave.PuedeVolar" />
+                    <ValidationMessage For="() => ave.PuedeVolar" />
+                </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+                </div>
+        </div>
+    </div>
+</EditForm> 
+
+
+
+
+@code{
+	private Ave ave = new Ave();
+	private List<Ave> aves = new List<Ave>();
+
+    public void GuardarAves()
+    {
+		aves.Add(ave);
+        localStorage.SetItem("aves", aves);
+    }
+
+    private int contadorAnimales = 0;
+
+    private void Contador()
+    {
+        contadorAnimales++;
+    }
+
+    public void Guardar()
+    {
+        
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        // Recuperar la lista de aves desde LocalStorage a una variable var
+        var savedAves = localStorage.GetItem<List<Ave>>("ave");
+
+        // Validar si la lista fue recuperada correctamente, copiarla a la lista
+        if (savedAves!= null)
+        {
+            aves = savedAves;
+        }
+    }
+}
+
+
