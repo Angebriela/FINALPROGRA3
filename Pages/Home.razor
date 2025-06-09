@@ -49,7 +49,7 @@
 </div>
 
  <div class="mb-3">
-    <button class="btn btn-secondary"@onclick="Contador">Guardar</button>
+    <button class="btn btn-secondary"@onclick="GuardarAves">Guardar</button>
  </div>
 <p role="status">Animales guardados: @contadorAnimales</p>
 
@@ -114,19 +114,17 @@
 	private Ave ave = new Ave();
 	private List<Ave> aves = new List<Ave>();
 
+    private int contadorAnimales = 0;
+    
     public void GuardarAves()
     {
 		aves.Add(ave);
         localStorage.SetItem("aves", aves);
-
-    }
-
-    private int contadorAnimales = 0;
-
-    private void Contador()
-    {
         contadorAnimales++;
+        
     }
+
+   
 
     public void Guardar()
     {
