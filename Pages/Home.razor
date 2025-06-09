@@ -51,13 +51,13 @@
  <div class="mb-3">
     <button class="btn btn-secondary"@onclick="Contador">Guardar</button>
  </div>
-<p role="animales guardados">Animales guardados: @contadorAnimales</p>
+<p role="status">Animales guardados: @contadorAnimales</p>
 
 
 
 <EditForm Models ="@ave" OnValidSubmit="@GuardarAves">
     <DataAnnotationsValidator />
-	<ValidationSummary />
+    <ValidationSummary />
 
     <div class="container text-center">
         <div class="row mt-3">
@@ -67,9 +67,14 @@
                 <ValidationMessage For="() => ave.Nombre" />
             </div>
             <div class="col">
-			    <label for="Especie" class="form-label">Especie: </label>
-			    <InputText id="especie" class="form-control" @bind-Value="ave.Especie" />
-			    <ValidationMessage For="() => ave.Especie" />
+                <label for="especie">Especie: </label>
+                <InputSelect id="especie" class="form-control" @bind-Value="ave.Especie">
+                    <option value="">Seleccione uno ...</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Gato">Gato</option>
+                    <option value="Ave">Ave</option>
+                </InputSelect>
+                <ValidationMessage For="() => ave.Especie" />
             </div>
         </div>
             <div class="row mt-3">
@@ -113,6 +118,7 @@
     {
 		aves.Add(ave);
         localStorage.SetItem("aves", aves);
+
     }
 
     private int contadorAnimales = 0;
